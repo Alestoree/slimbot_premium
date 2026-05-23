@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SlimBot Premium VIP</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#050a0f;--bg2:#080f17;--bg3:#0c1825;--accent:#00d4ff;--accent2:#0066ff;--accent3:#00ff88;--danger:#ff3366;--gold:#ffd700;--text:#c8e8ff;--text2:#6a9bbf;--border:#0d2a3f;--glow:0 0 20px #00d4ff44;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,#00d4ff08 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,#0066ff08 0%,transparent 50%);pointer-events:none;z-index:0;}
+  body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(#00d4ff06 1px,transparent 1px),linear-gradient(90deg,#00d4ff06 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+  .z{position:relative;z-index:1;}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);background:#050a0f99;backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;}
+  .logo{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;background:linear-gradient(90deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
+  .nav-links{display:flex;gap:6px;flex-wrap:wrap;}
+  .nav-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;transition:all .2s;text-transform:uppercase;}
+  .nav-btn:hover,.nav-btn.active{border-color:var(--accent);color:var(--accent);background:#00d4ff0d;}
+  .page{display:none;animation:fadeIn .3s ease;}
+  .page.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* SALES */
+  .hero{text-align:center;padding:60px 20px 40px;}
+  .hero-badge{display:inline-block;padding:4px 14px;border:1px solid var(--accent3);border-radius:20px;font-size:11px;letter-spacing:3px;color:var(--accent3);text-transform:uppercase;margin-bottom:16px;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 #0f0}50%{box-shadow:0 0 12px #00ff8844}}
+  .hero h1{font-family:'Orbitron',monospace;font-size:clamp(26px,6vw,54px);font-weight:900;line-height:1.1;margin-bottom:14px;background:linear-gradient(135deg,#fff 0%,var(--accent) 50%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero p{font-size:16px;color:var(--text2);max-width:440px;margin:0 auto 40px;line-height:1.6;}
+  .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;max-width:960px;margin:0 auto;padding:0 16px 50px;}
+  .price-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:22px 16px;text-align:center;position:relative;transition:all .3s;cursor:pointer;overflow:hidden;}
+  .price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s;}
+  .price-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--glow);}
+  .price-card:hover::before{opacity:1;}
+  .price-card.popular{border-color:var(--accent3);background:#0c2018;}
+  .price-card.popular::before{background:linear-gradient(90deg,transparent,var(--accent3),transparent);opacity:1;}
+  .popular-badge{position:absolute;top:8px;right:8px;background:var(--accent3);color:#000;font-size:9px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:20px;text-transform:uppercase;}
+  .price-days{font-family:'Orbitron',monospace;font-size:11px;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+  .price-amount{font-family:'Orbitron',monospace;font-size:32px;font-weight:900;color:#fff;margin-bottom:3px;}
+  .price-amount span{font-size:15px;color:var(--text2);}
+  .price-per{font-size:11px;color:var(--text2);margin-bottom:16px;}
+  .price-features{list-style:none;margin-bottom:18px;text-align:left;}
+  .price-features li{font-size:12px;color:var(--text2);padding:3px 0;display:flex;align-items:center;gap:6px;}
+  .price-features li::before{content:'▸';color:var(--accent);font-size:9px;}
+  .buy-btn{width:100%;padding:8px;border-radius:7px;border:1px solid var(--accent);background:#00d4ff0d;color:var(--accent);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+  .buy-btn:hover{background:var(--accent);color:#000;}
+  .buy-btn.green{border-color:var(--accent3);color:var(--accent3);background:#00ff880d;}
+  .buy-btn.green:hover{background:var(--accent3);color:#000;}
+  .contact-box{max-width:440px;margin:0 auto 50px;padding:20px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;text-align:center;}
+  .contact-box h3{font-family:'Orbitron',monospace;font-size:12px;color:var(--accent3);letter-spacing:2px;margin-bottom:8px;}
+  .contact-box p{color:var(--text2);font-size:13px;margin-bottom:10px;}
+  .wa-link{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;background:#00c35322;border:1px solid #00c353;border-radius:8px;color:#00c353;text-decoration:none;font-weight:700;font-size:14px;transition:all .2s;}
+  .wa-link:hover{background:#00c353;color:#000;}
+
+  /* LOGIN */
+  .login-wrap{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 16px;}
+  .login-box{width:100%;max-width:380px;background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:32px;position:relative;overflow:hidden;}
+  .login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent2),var(--accent),var(--accent3));}
+  .login-icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 18px;box-shadow:var(--glow);}
+  .login-box h2{font-family:'Orbitron',monospace;font-size:17px;text-align:center;margin-bottom:5px;color:#fff;}
+  .login-box .sub{text-align:center;color:var(--text2);font-size:13px;margin-bottom:22px;}
+  .tabs{display:flex;gap:4px;background:var(--bg2);border-radius:10px;padding:4px;margin-bottom:20px;}
+  .tab{flex:1;padding:7px;border-radius:7px;border:none;background:transparent;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+  .tab.active{background:var(--bg3);color:var(--accent);}
+  .inp-group{margin-bottom:13px;}
+  .inp-group label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:5px;}
+  .inp-group input{width:100%;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+  .inp-group input:focus{border-color:var(--accent);}
+  .sub-btn{width:100%;padding:11px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:5px;}
+  .sub-btn:hover{opacity:.85;transform:translateY(-1px);}
+  .sub-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+  .msg{padding:8px 12px;border-radius:7px;font-size:12px;margin-top:10px;text-align:center;display:none;}
+  .msg.error{background:#ff336622;border:1px solid var(--danger);color:var(--danger);display:block;}
+  .msg.success{background:#00ff8822;border:1px solid var(--accent3);color:var(--accent3);display:block;}
+
+  /* PANEL */
+  .panel-wrap{max-width:960px;margin:0 auto;padding:30px 16px;}
+  .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:10px;}
+  .panel-header h2{font-family:'Orbitron',monospace;font-size:17px;color:var(--accent);}
+  .badge{padding:3px 10px;border-radius:20px;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;}
+  .badge.admin{background:#ffd70022;border:1px solid var(--gold);color:var(--gold);}
+  .badge.user{background:#00d4ff22;border:1px solid var(--accent);color:var(--accent);}
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:24px;}
+  .stat-card{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:16px;text-align:center;}
+  .stat-card .num{font-family:'Orbitron',monospace;font-size:24px;font-weight:900;color:var(--accent);}
+  .stat-card .lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-top:3px;}
+  .sec{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;}
+  .sec h3{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--accent);margin-bottom:16px;}
+  .gen-form{display:grid;grid-template-columns:1fr 1fr auto;gap:9px;align-items:end;}
+  @media(max-width:560px){.gen-form{grid-template-columns:1fr;}}
+  .sel{padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;outline:none;width:100%;}
+  .gen-btn{padding:10px 16px;border-radius:7px;border:none;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all .2s;}
+  .gen-btn:hover{opacity:.85;}
+  .gen-btn:disabled{opacity:.5;cursor:not-allowed;}
+  .keys-table{width:100%;border-collapse:collapse;}
+  .keys-table th{text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);padding:7px 9px;border-bottom:1px solid var(--border);}
+  .keys-table td{padding:9px;font-size:11px;border-bottom:1px solid #0d2a3f44;vertical-align:middle;}
+  .kcode{font-family:'Orbitron',monospace;font-size:10px;color:var(--accent);background:#00d4ff0d;padding:3px 6px;border-radius:4px;cursor:pointer;}
+  .kcode:hover{background:#00d4ff22;}
+  .sbadge{padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+  .sbadge.active{background:#00ff8822;color:var(--accent3);border:1px solid var(--accent3);}
+  .sbadge.expired{background:#ff336622;color:var(--danger);border:1px solid var(--danger);}
+  .del-btn{padding:3px 8px;border-radius:5px;border:1px solid var(--danger);background:transparent;color:var(--danger);font-size:10px;cursor:pointer;transition:all .2s;font-family:'Rajdhani',sans-serif;font-weight:600;}
+  .del-btn:hover{background:var(--danger);color:#fff;}
+  .key-info-box{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:20px;margin-bottom:16px;}
+  .key-display-box{font-family:'Orbitron',monospace;font-size:12px;color:var(--accent);background:#00d4ff0d;border:1px solid #00d4ff22;border-radius:7px;padding:10px 14px;margin-bottom:16px;word-break:break-all;cursor:pointer;}
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;}
+  .ii{background:var(--bg3);border-radius:9px;padding:11px;}
+  .ii-l{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:4px;}
+  .ii-v{font-size:14px;font-weight:700;color:var(--text);}
+  .ii-v.g{color:var(--accent3);}.ii-v.r{color:var(--danger);}.ii-v.gold{color:var(--gold);}
+  .prog-wrap{margin-top:12px;}
+  .prog-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px;}
+  .prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent2),var(--accent3));transition:width .5s;}
+  .cmds-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;}
+  .cmd-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px;transition:border-color .2s;}
+  .cmd-card:hover{border-color:var(--accent);}
+  .cmd-cat{font-size:9px;color:var(--accent3);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+  .cmd-name{font-family:'Orbitron',monospace;font-size:10px;color:var(--accent);margin-bottom:4px;}
+  .cmd-desc{font-size:11px;color:var(--text2);line-height:1.5;}
+  .logout-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--danger);background:transparent;color:var(--danger);cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;transition:all .2s;text-transform:uppercase;}
+  .logout-btn:hover{background:var(--danger);color:#fff;}
+
+  /* QR PAGE */
+  .qr-wrap{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 16px;}
+  .qr-box{text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:40px;max-width:360px;width:100%;}
+  .qr-box h2{font-family:'Orbitron',monospace;font-size:16px;color:var(--accent);margin-bottom:8px;}
+  .qr-box p{color:var(--text2);font-size:13px;margin-bottom:20px;}
+  #qrImage{width:220px;height:220px;border-radius:12px;background:white;padding:8px;}
+  .status-dot{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;}
+  .status-dot.online{background:#00ff8822;border:1px solid var(--accent3);color:var(--accent3);}
+  .status-dot.offline{background:#ff336622;border:1px solid var(--danger);color:var(--danger);}
+
+  /* TUTO */
+  .tuto-wrap{max-width:680px;margin:0 auto;padding:30px 16px;}
+  .tstep{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:18px 18px 18px 22px;margin-bottom:12px;position:relative;}
+  .tstep::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent),var(--accent3));border-radius:3px 0 0 3px;}
+  .tstep h4{font-family:'Orbitron',monospace;font-size:11px;color:var(--accent);letter-spacing:2px;margin-bottom:9px;}
+  .tstep p,.tstep li{font-size:13px;color:var(--text2);line-height:1.7;}
+  .tstep ul{padding-left:16px;}
+  .code-blk{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:11px;font-family:'Courier New',monospace;font-size:12px;color:var(--accent3);margin:9px 0;cursor:pointer;position:relative;padding-right:70px;}
+  .code-blk:hover{background:#00ff8808;}
+  .code-blk::after{content:'📋 Copiar';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text2);font-family:'Rajdhani',sans-serif;}
+  .snum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;font-size:11px;font-weight:700;margin-right:6px;flex-shrink:0;}
+
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--accent3);color:#000;padding:8px 20px;border-radius:30px;font-weight:700;font-size:12px;letter-spacing:1px;transition:transform .3s;z-index:9999;}
+  #toast.show{transform:translateX(-50%) translateY(0);}
+  .empty{text-align:center;padding:30px;color:var(--text2);font-size:13px;}
+  ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="z">
+<nav>
+  <div class="logo">SlimBot</div>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-btn active" onclick="go('sales')">Precios</button>
+    <button class="nav-btn" onclick="go('login')">Acceso</button>
+    <button class="nav-btn" onclick="go('tuto')">Instalar</button>
+  </div>
+</nav>
+
+<!-- SALES -->
+<div class="page active" id="page-sales">
+  <div class="hero">
+    <div class="hero-badge">🤖 Bot Premium VIP</div>
+    <h1>SlimBot<br/>Premium</h1>
+    <p>Bot VIP para WhatsApp con descargas, IA, anime, economía y más. Activa tu licencia al instante.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card" onclick="openWA(1,'$3')">
+      <div class="price-days">1 Día</div><div class="price-amount"><span>$</span>3</div><div class="price-per">USD</div>
+      <ul class="price-features"><li>24 horas VIP</li><li>Todos los comandos</li><li>Soporte WhatsApp</li></ul>
+      <button class="buy-btn">Comprar</button>
+    </div>
+    <div class="price-card" onclick="openWA(7,'$10')">
+      <div class="price-days">7 Días</div><div class="price-amount"><span>$</span>10</div><div class="price-per">USD · $1.43/día</div>
+      <ul class="price-features"><li>1 semana VIP</li><li>Todos los comandos</li><li>Soporte prioritario</li></ul>
+      <button class="buy-btn">Comprar</button>
+    </div>
+    <div class="price-card popular" onclick="openWA(15,'$18')">
+      <div class="popular-badge">Popular</div>
+      <div class="price-days">15 Días</div><div class="price-amount"><span>$</span>18</div><div class="price-per">USD · $1.20/día</div>
+      <ul class="price-features"><li>2 semanas VIP</li><li>Todos los comandos</li><li>Soporte 24/7</li></ul>
+      <button class="buy-btn green">Comprar</button>
+    </div>
+    <div class="price-card" onclick="openWA(30,'$25')">
+      <div class="price-days">30 Días</div><div class="price-amount"><span>$</span>25</div><div class="price-per">USD · $0.83/día</div>
+      <ul class="price-features"><li>1 mes VIP</li><li>Todos los comandos</li><li>Mejor precio/día</li></ul>
+      <button class="buy-btn">Comprar</button>
+    </div>
+    <div class="price-card" onclick="openWA(60,'$35')">
+      <div class="price-days">2 Meses</div><div class="price-amount"><span>$</span>35</div><div class="price-per">USD · $0.58/día</div>
+      <ul class="price-features"><li>60 días VIP</li><li>Todos los comandos</li><li>Precio más bajo</li></ul>
+      <button class="buy-btn">Comprar</button>
+    </div>
+  </div>
+  <div class="contact-box">
+    <h3>📲 Comprar licencia</h3>
+    <p>Escríbenos por WhatsApp y te activamos al instante.</p>
+    <a class="wa-link" href="https://wa.me/526121697959" target="_blank">💬 +52 612 169 79 59</a>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="page" id="page-login">
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="login-icon">🔐</div>
+      <h2>Panel SlimBot</h2>
+      <div class="sub">Ingresa con tu key VIP o como admin</div>
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('key')">🔑 Mi Key</button>
+        <button class="tab" onclick="switchTab('admin')">⚙️ Admin</button>
+      </div>
+      <div id="tab-key">
+        <div class="inp-group"><label>Key VIP</label><input type="text" id="keyInput" placeholder="Lic-slim-XXXXXXXX"/></div>
+        <div class="inp-group"><label>Número WhatsApp</label><input type="text" id="phoneInput" placeholder="+52 612 000 0000"/></div>
+        <button class="sub-btn" id="keyBtn" onclick="loginKey()">Verificar Key</button>
+        <div class="msg" id="keyMsg"></div>
+      </div>
+      <div id="tab-admin" style="display:none">
+        <div class="inp-group"><label>Usuario</label><input type="text" id="adminUser" placeholder="admin"/></div>
+        <div class="inp-group"><label>Contraseña</label><input type="password" id="adminPass" placeholder="••••••••"/></div>
+        <button class="sub-btn" id="adminBtn" onclick="loginAdmin()">Entrar Admin</button>
+        <div class="msg" id="adminMsg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+  <div class="panel-wrap">
+    <div class="panel-header">
+      <div><h2>Panel Admin</h2><div style="color:var(--text2);font-size:12px;margin-top:2px">Gestión de licencias SlimBot VIP</div></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <span class="badge admin">👑 Admin</span>
+        <button class="nav-btn" onclick="go('qr')">📱 QR Bot</button>
+        <button class="logout-btn" onclick="logout()">Salir</button>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="stTotal">0</div><div class="lbl">Total</div></div>
+      <div class="stat-card"><div class="num" id="stActive" style="color:var(--accent3)">0</div><div class="lbl">Activas</div></div>
+      <div class="stat-card"><div class="num" id="stExpired" style="color:var(--danger)">0</div><div class="lbl">Vencidas</div></div>
+      <div class="stat-card"><div class="num" id="stPending" style="color:var(--gold)">0</div><div class="lbl">Sin activar</div></div>
+    </div>
+    <div class="sec">
+      <h3>⚡ Generar Key VIP</h3>
+      <div class="gen-form">
+        <div class="inp-group" style="margin:0"><label>Nombre cliente</label><input type="text" class="sel" id="genName" placeholder="Nombre..." style="width:100%"/></div>
+        <div class="inp-group" style="margin:0"><label>Plan</label>
+          <select class="sel" id="genPlan">
+            <option value="1">1 Día — $3</option><option value="7">7 Días — $10</option>
+            <option value="15">15 Días — $18</option><option value="30">30 Días — $25</option>
+            <option value="60">2 Meses — $35</option>
+          </select>
+        </div>
+        <button class="gen-btn" id="genBtn" onclick="generateKey()">⚡ Generar</button>
+      </div>
+      <div id="genResult" style="margin-top:12px;display:none;">
+        <div style="background:var(--bg2);border:1px solid var(--accent3);border-radius:9px;padding:12px;">
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:5px;">✅ Key generada — toca para copiar</div>
+          <div id="genKeyDisplay" style="font-family:'Orbitron',monospace;font-size:12px;color:var(--accent);cursor:pointer;" onclick="copyText(this.textContent)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec">
+      <h3>🗝️ Keys registradas</h3>
+      <div style="overflow-x:auto;">
+        <table class="keys-table">
+          <thead><tr><th>Key</th><th>Cliente</th><th>Plan</th><th>Vence</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="keysBody"><tr><td colspan="6"><div class="empty">Cargando...</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- USER -->
+<div class="page" id="page-user">
+  <div class="panel-wrap">
+    <div class="panel-header">
+      <div><h2>Mi Panel VIP</h2><div style="color:var(--text2);font-size:12px;margin-top:2px" id="userGreet">Bienvenido</div></div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span class="badge user">🤖 VIP</span>
+        <button class="logout-btn" onclick="logout()">Salir</button>
+      </div>
+    </div>
+    <div class="sec"><h3>🔑 Mi Licencia</h3>
+      <div class="key-info-box">
+        <div class="key-display-box" id="uKeyDisplay" onclick="copyText(this.textContent)"></div>
+        <div class="info-grid">
+          <div class="ii"><div class="ii-l">Cliente</div><div class="ii-v" id="iName">—</div></div>
+          <div class="ii"><div class="ii-l">Número</div><div class="ii-v" id="iPhone">—</div></div>
+          <div class="ii"><div class="ii-l">Plan</div><div class="ii-v gold" id="iPlan">—</div></div>
+          <div class="ii"><div class="ii-l">Días restantes</div><div class="ii-v g" id="iDays">—</div></div>
+          <div class="ii"><div class="ii-l">Vence</div><div class="ii-v" id="iExpiry">—</div></div>
+          <div class="ii"><div class="ii-l">Estado</div><div class="ii-v g" id="iStatus">—</div></div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-lbl"><span>Tiempo usado</span><span id="progLbl">0%</span></div>
+          <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="sec"><h3>📖 Comandos VIP</h3><div class="cmds-grid" id="cmdsGrid"></div></div>
+  </div>
+</div>
+
+<!-- QR / BOT STATUS -->
+<div class="page" id="page-qr">
+  <div class="qr-wrap">
+    <div class="qr-box">
+      <h2>📱 Conectar Bot</h2>
+      <p>Escanea el QR con WhatsApp para conectar el bot</p>
+      <div id="botStatusBadge" style="margin-bottom:16px;"></div>
+      <img id="qrImage" src="" style="display:none;" alt="QR Code"/>
+      <div id="qrMsg" style="color:var(--text2);font-size:13px;margin-top:12px;"></div>
+      <button class="sub-btn" style="margin-top:16px;" onclick="checkBotStatus()">🔄 Actualizar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TUTO -->
+<div class="page" id="page-tuto">
+  <div class="tuto-wrap">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div class="hero-badge">📦 Guía de instalación</div>
+      <h2 style="font-family:'Orbitron',monospace;font-size:clamp(18px,4vw,28px);margin-top:10px;background:linear-gradient(90deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Instalar en Railway</h2>
+    </div>
+    <div class="tstep"><h4><span class="snum">1</span>Crear cuenta en GitHub</h4>
+      <p>Ve a <strong style="color:var(--accent)">github.com</strong> → Sign up → crea tu cuenta gratis.</p></div>
+    <div class="tstep"><h4><span class="snum">2</span>Subir los archivos</h4>
+      <ul><li>Crea un repositorio nuevo llamado <code style="color:var(--accent3)">slimbot-premium</code></li><li>Sube todos los archivos de esta carpeta</li><li>Importante: mantén la estructura de carpetas igual</li></ul></div>
+    <div class="tstep"><h4><span class="snum">3</span>Crear cuenta en Railway</h4>
+      <p>Ve a <strong style="color:var(--accent)">railway.app</strong> → Login with GitHub → conecta tu cuenta.</p></div>
+    <div class="tstep"><h4><span class="snum">4</span>Crear proyecto en Railway</h4>
+      <ul><li>Toca <strong>New Project</strong></li><li>Elige <strong>Deploy from GitHub repo</strong></li><li>Selecciona tu repo <code style="color:var(--accent3)">slimbot-premium</code></li><li>Railway lo detecta automático y despliega</li></ul></div>
+    <div class="tstep"><h4><span class="snum">5</span>Obtener tu URL pública</h4>
+      <ul><li>En Railway ve a tu proyecto → Settings → Networking</li><li>Toca <strong>Generate Domain</strong></li><li>Te da una URL tipo: <code style="color:var(--accent3)">slimbot.up.railway.app</code></li><li>Esa URL es tu panel web publicado 🎉</li></ul></div>
+    <div class="tstep"><h4><span class="snum">6</span>Conectar el bot WhatsApp</h4>
+      <ul><li>Ve a tu URL → Login como Admin</li><li>Toca el botón <strong>📱 QR Bot</strong> arriba</li><li>Escanea el QR con WhatsApp → Dispositivos vinculados</li><li>¡Bot conectado y funcionando 24/7!</li></ul></div>
+    <div class="tstep"><h4><span class="snum">7</span>Generar y activar keys</h4>
+      <ul><li>Panel Admin → Generar Key → escribe nombre + elige plan</li><li>La key se crea automáticamente en la base de datos del servidor</li><li>Mándale la key al cliente</li><li>Cliente escribe: <code style="color:var(--accent3)">.key Lic-slim-XXXXXXXX</code></li><li>✅ Bot activo con su licencia</li></ul></div>
+    <div style="text-align:center;margin-top:20px;">
+      <p style="color:var(--text2);font-size:13px;margin-bottom:10px;">¿Necesitas ayuda?</p>
+      <a class="wa-link" href="https://wa.me/526121697959" target="_blank">💬 Contactar soporte</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="toast">✅ Copiado</div>
+
+<script>
+const BOT_CMDS=[
+  {cat:'Licencia',cmd:'.key [código]',desc:'Activa tu licencia VIP'},
+  {cat:'Licencia',cmd:'.info',desc:'Info de tu key, días restantes, nombre'},
+  {cat:'Licencia',cmd:'.menu',desc:'Ver todos los comandos del bot'},
+  {cat:'Descargas',cmd:'.facebook / .fb',desc:'Descarga videos de Facebook'},
+  {cat:'Descargas',cmd:'.tiktok / .tt',desc:'Descarga videos de TikTok'},
+  {cat:'Descargas',cmd:'.instagram / .ig',desc:'Descarga de Instagram'},
+  {cat:'Descargas',cmd:'.play / .mp3',desc:'YouTube audio MP3'},
+  {cat:'Descargas',cmd:'.play2 / .mp4',desc:'YouTube video MP4'},
+  {cat:'Descargas',cmd:'.spotify / .sp',desc:'Descarga de Spotify'},
+  {cat:'IA',cmd:'.ia / .chatgpt',desc:'Pregunta a ChatGPT'},
+  {cat:'Grupo',cmd:'.bot on/off',desc:'Activar o desactivar el bot'},
+  {cat:'Grupo',cmd:'.tag [texto]',desc:'Mencionar a todos en el grupo'},
+  {cat:'Grupo',cmd:'.kick / .promote',desc:'Expulsar o promover usuarios'},
+  {cat:'Grupo',cmd:'.warn @usuario',desc:'Advertir a un usuario'},
+  {cat:'Anime',cmd:'.hug / .kiss / .slap',desc:'Comandos anime con GIFs'},
+  {cat:'Anime',cmd:'.dance / .cry / .pat',desc:'Más comandos anime'},
+  {cat:'Economía',cmd:'.balance / .daily',desc:'Ver balance y recompensa diaria'},
+  {cat:'Economía',cmd:'.work / .slot',desc:'Trabajar o apostar monedas'},
+  {cat:'Buscar',cmd:'.imagen / .wikipedia',desc:'Buscar imágenes o info'},
+  {cat:'Utils',cmd:'.sticker / .removebg',desc:'Sticker y quitar fondo'},
+  {cat:'Utils',cmd:'.hd / .ping',desc:'Mejorar imagen y estado del bot'},
+  {cat:'NSFW 🔞',cmd:'.xnxx [búsqueda]',desc:'Videos XNXX (grupo habilitado)'},
+  {cat:'NSFW 🔞',cmd:'.xvideos [búsqueda]',desc:'Videos XVideos (grupo habilitado)'},
+  {cat:'Redes',cmd:'.redes',desc:'Ver contacto y redes del admin'},
+];
+
+// Session storage
+let adminCreds = null;
+let userKeyData = null;
+
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(id==='qr') checkBotStatus();
+}
+function switchTab(tab){
+  document.getElementById('tab-key').style.display=tab==='key'?'block':'none';
+  document.getElementById('tab-admin').style.display=tab==='admin'?'block':'none';
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',(tab==='key'&&i===0)||(tab==='admin'&&i===1)));
+}
+
+async function loginKey(){
+  const code=document.getElementById('keyInput').value.trim();
+  const phone=document.getElementById('phoneInput').value.trim();
+  const msg=document.getElementById('keyMsg');
+  const btn=document.getElementById('keyBtn');
+  if(!code||!phone){showMsg(msg,'error','Ingresa tu key y número');return;}
+  btn.disabled=true;btn.textContent='Verificando...';
+  try{
+    const r=await fetch('/api/key/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,phone})});
+    const data=await r.json();
+    if(data.ok){
+      userKeyData=data.key;
+      sessionStorage.setItem('slim_user',JSON.stringify({code,phone}));
+      loadUserPanel(data.key);
+      go('user');updateNav('user');
+    }else{
+      showMsg(msg,'error',data.error==='Licencia vencida'?'⏰ Licencia vencida. Contacta al admin.':'❌ '+data.error);
+    }
+  }catch(e){showMsg(msg,'error','❌ Error de conexión. Intenta de nuevo.');}
+  btn.disabled=false;btn.textContent='Verificar Key';
+}
+
+async function loginAdmin(){
+  const user=document.getElementById('adminUser').value.trim();
+  const pass=document.getElementById('adminPass').value;
+  const msg=document.getElementById('adminMsg');
+  const btn=document.getElementById('adminBtn');
+  btn.disabled=true;btn.textContent='Entrando...';
+  try{
+    const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user,pass})});
+    const data=await r.json();
+    if(data.ok){
+      adminCreds={user,pass};
+      sessionStorage.setItem('slim_admin',JSON.stringify({user,pass}));
+      await loadAdminPanel();
+      go('admin');updateNav('admin');
+    }else{showMsg(msg,'error','❌ Credenciales incorrectas');}
+  }catch(e){showMsg(msg,'error','❌ Error de conexión.');}
+  btn.disabled=false;btn.textContent='Entrar Admin';
+}
+
+function logout(){
+  adminCreds=null;userKeyData=null;
+  sessionStorage.removeItem('slim_admin');sessionStorage.removeItem('slim_user');
+  go('sales');updateNav('guest');
+}
+
+function updateNav(role){
+  const nav=document.getElementById('navLinks');
+  if(role==='admin'){
+    nav.innerHTML=`<button class="nav-btn" onclick="go('admin')">Panel</button><button class="nav-btn" onclick="go('qr')">QR Bot</button><span class="badge admin">👑 Admin</span><button class="logout-btn" onclick="logout()">Salir</button>`;
+  }else if(role==='user'){
+    nav.innerHTML=`<button class="nav-btn" onclick="go('user')">Mi Panel</button><span class="badge user">🤖 VIP</span><button class="logout-btn" onclick="logout()">Salir</button>`;
+  }else{
+    nav.innerHTML=`<button class="nav-btn active" onclick="go('sales')">Precios</button><button class="nav-btn" onclick="go('login')">Acceso</button><button class="nav-btn" onclick="go('tuto')">Instalar</button>`;
+  }
+}
+
+async function loadAdminPanel(){
+  if(!adminCreds)return;
+  try{
+    const r=await fetch('/api/keys/list',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(adminCreds)});
+    const data=await r.json();
+    if(!data.ok)return;
+    const keys=data.keys;
+    const now=new Date();
+    document.getElementById('stTotal').textContent=keys.length;
+    document.getElementById('stActive').textContent=keys.filter(k=>k.active).length;
+    document.getElementById('stExpired').textContent=keys.filter(k=>!k.active).length;
+    document.getElementById('stPending').textContent=keys.filter(k=>!k.phone).length;
+    renderKeys(keys);
+  }catch(e){console.error(e);}
+}
+
+function renderKeys(keys){
+  const tbody=document.getElementById('keysBody');
+  if(!keys.length){tbody.innerHTML='<tr><td colspan="6"><div class="empty">No hay keys aún</div></td></tr>';return;}
+  tbody.innerHTML=keys.map(k=>{
+    const exp=new Date(k.expiry);
+    return`<tr>
+      <td><span class="kcode" onclick="copyText('${k.code}')">${k.code}</span></td>
+      <td style="color:var(--text)">${k.name||'—'}</td>
+      <td style="color:var(--text2)">${k.days}d</td>
+      <td style="color:var(--text2);font-size:10px">${exp.toLocaleDateString('es-MX')}${k.active?` <span style="color:var(--accent3)">(${k.daysLeft}d)</span>`:''}</td>
+      <td><span class="sbadge ${k.active?'active':'expired'}">${k.active?'Activa':'Vencida'}</span></td>
+      <td><button class="del-btn" onclick="deleteKey('${k.code}')">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+async function generateKey(){
+  const name=document.getElementById('genName').value.trim();
+  const days=document.getElementById('genPlan').value;
+  if(!name){alert('Ingresa el nombre del cliente');return;}
+  const btn=document.getElementById('genBtn');
+  btn.disabled=true;btn.textContent='Generando...';
+  try{
+    const r=await fetch('/api/keys/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...adminCreds,name,days})});
+    const data=await r.json();
+    if(data.ok){
+      document.getElementById('genKeyDisplay').textContent=data.key.code;
+      document.getElementById('genResult').style.display='block';
+      document.getElementById('genName').value='';
+      await loadAdminPanel();
+    }
+  }catch(e){alert('Error generando key');}
+  btn.disabled=false;btn.textContent='⚡ Generar';
+}
+
+async function deleteKey(code){
+  if(!confirm('¿Borrar esta key?'))return;
+  try{
+    await fetch('/api/keys/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...adminCreds,code})});
+    await loadAdminPanel();
+  }catch(e){alert('Error borrando key');}
+}
+
+function loadUserPanel(k){
+  const now=new Date();const exp=new Date(k.expiry);const cre=new Date(k.created);
+  const dl=k.daysLeft||Math.max(0,Math.ceil((exp-now)/86400000));
+  const pct=Math.min(100,Math.round(((now-cre)/(exp-cre))*100));
+  document.getElementById('userGreet').textContent=`Bienvenido, ${k.name||'Usuario'}`;
+  document.getElementById('uKeyDisplay').textContent=k.code;
+  document.getElementById('iName').textContent=k.name||'—';
+  document.getElementById('iPhone').textContent=k.phone||'—';
+  document.getElementById('iPlan').textContent=k.days+' días';
+  document.getElementById('iDays').textContent=dl+' días';
+  document.getElementById('iDays').className='ii-v '+(dl>3?'g':'r');
+  document.getElementById('iExpiry').textContent=exp.toLocaleDateString('es-MX');
+  document.getElementById('iStatus').textContent=dl>0?'✅ Activa':'❌ Vencida';
+  document.getElementById('iStatus').className='ii-v '+(dl>0?'g':'r');
+  document.getElementById('progLbl').textContent=pct+'%';
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('cmdsGrid').innerHTML=BOT_CMDS.map(c=>`
+    <div class="cmd-card"><div class="cmd-cat">${c.cat}</div><div class="cmd-name">${c.cmd}</div><div class="cmd-desc">${c.desc}</div></div>`).join('');
+}
+
+async function checkBotStatus(){
+  const badge=document.getElementById('botStatusBadge');
+  const qrImg=document.getElementById('qrImage');
+  const qrMsg=document.getElementById('qrMsg');
+  badge.innerHTML='<div class="status-dot offline">🔄 Verificando...</div>';
+  try{
+    const r=await fetch('/api/bot/status');
+    const data=await r.json();
+    if(data.connected){
+      badge.innerHTML='<div class="status-dot online">🟢 Bot conectado</div>';
+      qrImg.style.display='none';
+      qrMsg.textContent='El bot está activo y funcionando.';
+    }else if(data.hasQR){
+      badge.innerHTML='<div class="status-dot offline">⚠️ Escanea el QR</div>';
+      const qr=await fetch('/api/bot/qr');
+      const qrData=await qr.json();
+      if(qrData.ok){qrImg.src=qrData.qr;qrImg.style.display='block';}
+      qrMsg.textContent='Abre WhatsApp → Dispositivos vinculados → Escanear QR';
+    }else{
+      badge.innerHTML='<div class="status-dot offline">🔴 Bot desconectado</div>';
+      qrMsg.textContent='Iniciando bot... espera unos segundos y actualiza.';
+    }
+  }catch(e){
+    badge.innerHTML='<div class="status-dot offline">❌ Sin conexión</div>';
+  }
+}
+
+function showMsg(el,type,text){el.className='msg '+type;el.textContent=text;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
+function copyText(t){try{navigator.clipboard.writeText(t.trim());}catch(e){}const toast=document.getElementById('toast');toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2000);}
+function openWA(days,price){const l={1:'1 día',7:'7 días',15:'15 días',30:'30 días',60:'2 meses'};const t=encodeURIComponent(`Hola! Quiero el plan de ${l[days]} (${price}) de SlimBot VIP 🤖`);window.open(`https://wa.me/526121697959?text=${t}`,'_blank');}
+
+// Restaurar sesión
+(async()=>{
+  const sa=sessionStorage.getItem('slim_admin');
+  const su=sessionStorage.getItem('slim_user');
+  if(sa){
+    const c=JSON.parse(sa);
+    const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(c)}).catch(()=>null);
+    if(r&&r.ok){adminCreds=c;await loadAdminPanel();go('admin');updateNav('admin');return;}
+    sessionStorage.removeItem('slim_admin');
+  }
+  if(su){
+    const {code,phone}=JSON.parse(su);
+    const r=await fetch('/api/key/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,phone})}).catch(()=>null);
+    if(r&&r.ok){const d=await r.json();if(d.ok){loadUserPanel(d.key);go('user');updateNav('user');return;}}
+    sessionStorage.removeItem('slim_user');
+  }
+})();
+</script>
+</body>
+</html>
