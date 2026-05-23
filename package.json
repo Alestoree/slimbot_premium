@@ -1,0 +1,19 @@
+{
+  "name": "slimbot-premium",
+  "version": "2.0.0",
+  "description": "SlimBot Premium VIP - WhatsApp Bot con sistema de keys",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.0",
+    "@hapi/boom": "^10.0.1",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "qrcode": "^1.5.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
